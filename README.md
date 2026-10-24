@@ -1,56 +1,188 @@
-# Welcome to your Expo app 👋
+# HB+ Authentication App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A cross-platform authentication application developed as part of the HB+ IT Intern assignment. Built with Expo, React Native, TypeScript, and Firebase Authentication, the app provides Google Sign-In with company-domain validation and a protected dashboard.
 
-## Get started
+## Features
 
-1. Install dependencies
+- **Google Sign-In:** Authenticate using a Google account.
+- **Company email restriction:** Accept only email addresses belonging to `@hbplus.fit`.
+- **Email verification:** Reject accounts whose email address is not verified.
+- **Protected dashboard:** Redirect unauthenticated users to the login screen.
+- **Session management:** Track authentication state and provide logout functionality.
+- **Loading and error handling:** Display appropriate feedback during authentication and session checks.
+- **Cross-platform support:** Run the application on Android and the web using Expo.
+- **Development-only dashboard preview:** Inspect the dashboard UI without signing in. This preview does not create an authenticated session.
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+- React Native
+- Expo and Expo Router
+- React and TypeScript
+- Firebase Authentication
+- Google Sign-In
+- Jest for unit testing
+- Netlify configuration for web deployment
 
-   ```bash
-   npx expo start
-   ```
+## Project Structure
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```text
+.
+├── app/
+│   ├── _layout.tsx
+│   ├── index.tsx
+│   └── dashboard.tsx
+├── assets/
+├── netlify/
+│   └── functions/
+│       └── server.ts
+├── src/
+│   ├── components/
+│   ├── contexts/
+│   ├── lib/
+│   ├── services/
+│   └── utils/
+│       └── __tests__/
+├── app.json
+├── netlify.toml
+├── package.json
+├── .env.example
+└── README.md
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+## Prerequisites
 
-### Other setup steps
+Before running the project, install:
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+- Node.js and npm
+- Git
+- A Firebase project with Authentication enabled
+- Google OAuth client configuration
+- Android Studio and an Android emulator if testing on Android
 
-## Learn more
+## Getting Started
 
-To learn more about developing your project with Expo, look at the following resources:
+### 1. Clone the repository
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+After the project has been published to GitHub, clone it using the repository URL:
 
-## Join the community
+```bash
+git clone <YOUR_GITHUB_REPOSITORY_URL>
+cd hbplus-auth
+```
 
-Join our community of developers creating universal apps.
+Replace the placeholder URL with the actual repository URL.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Configure environment variables
+
+Create a `.env` file in the project root using `.env.example` as a reference.
+
+Configure the following variables with values from your Firebase project and Google Cloud OAuth configuration:
+
+| Variable | Purpose |
+|---|---|
+| `EXPO_PUBLIC_FIREBASE_API_KEY` | Firebase web API key |
+| `EXPO_PUBLIC_FIREBASE_AUTH_DOMAIN` | Firebase authentication domain |
+| `EXPO_PUBLIC_FIREBASE_PROJECT_ID` | Firebase project ID |
+| `EXPO_PUBLIC_FIREBASE_STORAGE_BUCKET` | Firebase storage bucket |
+| `EXPO_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | Firebase messaging sender ID |
+| `EXPO_PUBLIC_FIREBASE_APP_ID` | Firebase web app ID |
+| `EXPO_PUBLIC_GOOGLE_WEB_CLIENT_ID` | Google OAuth web client ID |
+| `EXPO_PUBLIC_GOOGLE_ANDROID_CLIENT_ID` | Google OAuth Android client ID |
+
+Use the actual values from your own configuration. Do not commit `.env` or put private credentials in `.env.example`.
+
+### 4. Configure Firebase and Google Sign-In
+
+1. Create or select a project in the Firebase Console.
+2. Register a web application and configure its Firebase settings.
+3. Enable Google as a sign-in provider under Firebase Authentication.
+4. Configure the authorized domains required for local development and the deployed web application.
+5. Configure the appropriate Google OAuth client IDs for web and Android.
+6. For Android, ensure the OAuth configuration matches the application package name and the relevant signing certificate fingerprints.
+
+The Android package name configured for this project is `com.hbplus.auth`.
+
+**Access policy:** The app validates the email verification status and checks that the email domain is `hbplus.fit`. Successful sign-in requires a real, eligible Google account. Client-side validation alone is not a substitute for server-side authorization when accessing protected backend resources.
+
+### 5. Run the application
+
+Start the Expo development server:
+
+```bash
+npx expo start
+```
+
+To start the web version:
+
+```bash
+npx expo start --web
+```
+
+For Android, start an emulator through Android Studio and launch the app using the Expo development workflow.
+
+## Testing and Validation
+
+Run the following commands from the project root.
+
+### TypeScript validation
+
+```bash
+npx tsc --noEmit
+```
+
+### Unit tests
+
+```bash
+npx jest --runInBand
+```
+
+The email-domain validation test suite covers official-domain acceptance, rejection of personal and lookalike domains, case-insensitive matching, subdomains, malformed addresses, and empty values.
+
+### Expo project checks
+
+```bash
+npx expo-doctor
+```
+
+### Web production export
+
+```bash
+npx expo export --platform web --clear
+```
+
+These checks validate TypeScript, unit tests, project configuration, and web export. Passing them does not independently confirm that production OAuth, successful sign-in with an eligible HB+ account, or deployment is working correctly.
+
+## Development Dashboard Preview
+
+A development-only preview option is available from the login screen to inspect the dashboard UI when an eligible company account is unavailable.
+
+The preview is for UI testing only. It does not authenticate a user and must not be used to access real protected data. Development-only functionality should not be exposed in production builds.
+
+## Deployment
+
+The repository includes a `netlify.toml` file and a Netlify server function for the Expo web output.
+
+Deployment steps:
+
+1. Push the project to GitHub.
+2. Link the GitHub repository to a Netlify site.
+3. Configure the build command, publish directory, and function settings from `netlify.toml`.
+4. Add the required Expo public environment variables in Netlify's site settings.
+5. Configure the deployed domain in Firebase Authentication and the relevant Google OAuth settings.
+6. Deploy and test login, rejected accounts, session behavior, logout, and protected routes.
+
+The deployment configuration must be validated with a successful Netlify build and live deployment before the hosted application can be considered verified.
+
+## Security Considerations
+
+- Never commit `.env`, private keys, service-account credentials, or other secrets.
+- Variables prefixed with `EXPO_PUBLIC_` are included in client-side code and must not contain private secrets.
+- Firebase client configuration is not an authorization mechanism.
+- Enforce authorization using appropriate backend checks or Firebase Security Rules when protected data is involved.
+- Verify domain restrictions with both eligible and ineligible accounts before release.
