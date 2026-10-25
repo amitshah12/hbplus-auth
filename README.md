@@ -66,7 +66,7 @@ Before running the project, install:
 After the project has been published to GitHub, clone it using the repository URL:
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone https://github.com/amitshah12/hbplus-auth.git
 cd hbplus-auth
 ```
 
