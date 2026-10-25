@@ -69,9 +69,6 @@ After the project has been published to GitHub, clone it using the repository UR
 git clone https://github.com/amitshah12/hbplus-auth.git
 cd hbplus-auth
 ```
-
-Replace the placeholder URL with the actual repository URL.
-
 ### 2. Install dependencies
 
 ```bash
